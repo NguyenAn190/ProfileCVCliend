@@ -10,40 +10,45 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
-import { ToastAction } from "@/components/ui/toast"
+import { ToastAction } from "@/components/ui/toast";
+import LoginSchema from "./login-schema";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
+import { login } from "@/service/auth/auth.service";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+
 export function LoginForm() {
+  const router = useRouter();
   const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(LoginSchema),
   });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data: LoginData) => {
+    setIsLoading(true);
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/v1/users/login",
-        formData
-      );
-      console.log("Server response:", response.data);
-    } catch (error) {
-      console.error("Error submitting form:", error?.response.data);
+      const response = await login(data); // Sử dụng hàm login từ services
+      Cookies.set("access_token", response.access_token, { expires: 7 });
+      router.push("/");
+    } catch (error: any) {
+      console.log(error)
       toast({
         variant: "destructive",
         title: "Lỗi!",
         description: error?.response.data.message,
-        action: <ToastAction altText="Try again">Thử lại</ToastAction>
+        action: <ToastAction altText="Try again">Thử lại</ToastAction>,
       });
+      
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -57,7 +62,7 @@ export function LoginForm() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -65,10 +70,12 @@ export function LoginForm() {
                   id="email"
                   type="email"
                   placeholder="m@example.com"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
+                  {...register("email")}
+                  className={errors.email ? "border-red-500" : ""}
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email.message}</p>
+                )}
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
@@ -83,10 +90,14 @@ export function LoginForm() {
                 <Input
                   id="password"
                   type="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
+                  {...register("password")}
+                  className={errors.password ? "border-red-500" : ""}
                 />
+                {errors.password && (
+                  <p className="text-red-500 text-sm">
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
               <Button type="submit" className="w-full">
                 Login
