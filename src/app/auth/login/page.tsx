@@ -20,7 +20,7 @@ import { login } from "@/service/auth/auth.service";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 
-export function LoginForm() {
+export default function Login() {
   const router = useRouter();
   const { toast } = useToast();
   const {
@@ -35,7 +35,7 @@ export function LoginForm() {
   const onSubmit = async (data: LoginData) => {
     setIsLoading(true);
     try {
-      const response = await login(data); // Sử dụng hàm login từ services
+      const response = await login(data);
       Cookies.set("access_token", response.access_token, { expires: 7 });
       router.push("/");
     } catch (error: any) {
@@ -119,4 +119,3 @@ export function LoginForm() {
   );
 }
 
-export default LoginForm;

@@ -1,8 +1,6 @@
 
-export function Home() {
+export default function Home() {
     return (
         <section>home</section>
     )
 } 
-
-export default Home;

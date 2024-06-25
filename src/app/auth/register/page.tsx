@@ -1,28 +1,24 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import RegisterSchema from "@/app/auth/register/register-schema";
+"use client";
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import RegisterSchema from '@/app/auth/register/register-schema';
 
-export function RegisterForm() {
+export default function RegisterPage() {
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(RegisterSchema),
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     console.log(data); // Xử lý logic gửi form ở đây
   };
 
   return (
+    <section className="flex items-center justify-center h-screen">
     <Card className="mx-auto max-w-sm">
       <CardHeader>
         <CardTitle className="text-xl">Đăng kí</CardTitle>
@@ -43,7 +39,9 @@ export function RegisterForm() {
                   required
                 />
                 {errors.firstName && (
-                  <p className="text-red-500 text-sm">{errors.firstName.message}</p>
+                  <p className="text-red-500 text-sm">
+                    {errors.firstName.message}
+                  </p>
                 )}
               </div>
               <div className="grid gap-2">
@@ -55,7 +53,9 @@ export function RegisterForm() {
                   required
                 />
                 {errors.lastName && (
-                  <p className="text-red-500 text-sm">{errors.lastName.message}</p>
+                  <p className="text-red-500 text-sm">
+                    {errors.lastName.message}
+                  </p>
                 )}
               </div>
             </div>
@@ -77,7 +77,9 @@ export function RegisterForm() {
                 required
               />
               {errors.password && (
-                <p className="text-red-500 text-sm">{errors.password.message}</p>
+                <p className="text-red-500 text-sm">
+                  {errors.password.message}
+                </p>
               )}
             </div>
             <div className="grid gap-2">
@@ -89,7 +91,9 @@ export function RegisterForm() {
                 required
               />
               {errors.confirmPassword && (
-                <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>
+                <p className="text-red-500 text-sm">
+                  {errors.confirmPassword.message}
+                </p>
               )}
             </div>
             <Button type="submit" className="w-full">
@@ -102,13 +106,12 @@ export function RegisterForm() {
           <div className="mt-4 text-center text-sm">
             Bạn đã có tài khoản?{" "}
             <Link href="/auth/login" passHref>
-              <a className="underline">Đăng nhập</a>
+              <span className="underline">Đăng nhập</span>
             </Link>
           </div>
         </form>
       </CardContent>
     </Card>
+    </section>
   );
 }
-
-export default RegisterForm;
