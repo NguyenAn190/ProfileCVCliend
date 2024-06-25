@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_URL = 'http://localhost:4000/api/v1/';
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const login = async (data: any) => {
+export const login = async (data :any) => {
   const response = await axios.post(`${API_URL}users/login`, data);
   return response.data;
 };
