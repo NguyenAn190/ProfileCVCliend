@@ -1,6 +1,7 @@
+import { LoadingPage } from "@/components/loading/loading-page";
 
 export default function Home() {
     return (
-        <section>home</section>
+         <section>Home</section>
     )
 } 

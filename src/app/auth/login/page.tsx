@@ -19,8 +19,10 @@ import { useState } from "react";
 import { login } from "@/service/auth/auth.service";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { LoadingPage } from "@/components/loading/loading-page";
 
 export default function Login() {
+  
   const router = useRouter();
   const { toast } = useToast();
   const {
@@ -31,9 +33,9 @@ export default function Login() {
     resolver: yupResolver(LoginSchema),
   });
   const [isLoading, setIsLoading] = useState(false);
-
+  
   const onSubmit = async (data: LoginData) => {
-    setIsLoading(true);
+    setIsLoading(true);  
     try {
       const response = await login(data);
       Cookies.set("access_token", response.access_token, { expires: 7 });
@@ -54,6 +56,7 @@ export default function Login() {
 
   return (
     <section className="flex items-center justify-center h-screen">
+      <LoadingPage isLoading={isLoading} />
       <Card className="max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">Đăng nhập</CardTitle>
