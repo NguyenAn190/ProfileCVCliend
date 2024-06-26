@@ -15,7 +15,12 @@ import { LoadingPage } from '@/components/loading/loading-page';
 
 const ForgotPassword = () => {
   const params = useParams();
-  const { token, id } = params;
+  let { token, id } = params;
+
+  // Đảm bảo token và id là chuỗi
+  if (Array.isArray(token)) token = token[0];
+  if (Array.isArray(id)) id = id[0];
+
   const router = useRouter();
   const { toast } = useToast();
   const { register, handleSubmit, setError, formState: { errors } } = useForm({
@@ -37,7 +42,6 @@ const ForgotPassword = () => {
             description: "Gmail không hợp lệ hoặc đã hết hạn!",
             action: <ToastAction altText="Try again">Thử lại</ToastAction>,
           });
-          
         }
         router.push("/login");
       } finally {
