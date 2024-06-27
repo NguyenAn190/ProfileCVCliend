@@ -68,12 +68,12 @@ export default function RegisterPage() {
 
   const signInWithGoogle = async () => {
     try {
-      window.location.href = process.env.NEXT_PUBLIC_API_URL + '/users/auth/google';
+      window.location.href = process.env.NEXT_PUBLIC_API_URL + 'users/auth/google';
     } catch (error) {
       console.error('Error during Google sign-in:', error);
     }
   };
-  
+
   return (
     <section className="flex items-center justify-center h-screen">
       <LoadingPage isLoading={isLoading} />
