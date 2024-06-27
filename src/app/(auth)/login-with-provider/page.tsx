@@ -49,7 +49,7 @@ function LoginWithProvider() {
 // Bọc LoginWithProvider trong Suspense
 export default function WrappedLoginWithProvider() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingPage isLoading={true} />}>
       <LoginWithProvider />
     </Suspense>
   );
