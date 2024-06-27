@@ -66,6 +66,14 @@ export default function RegisterPage() {
     }
   };
 
+  const signInWithGoogle = async () => {
+    try {
+      window.location.href = process.env.NEXT_PUBLIC_API_URL + '/users/auth/google';
+    } catch (error) {
+      console.error('Error during Google sign-in:', error);
+    }
+  };
+  
   return (
     <section className="flex items-center justify-center h-screen">
       <LoadingPage isLoading={isLoading} />
@@ -142,10 +150,13 @@ export default function RegisterPage() {
               <Button type="submit" className="w-full">
                 Đăng kí
               </Button>
-              <Button variant="outline" className="w-full">
-              <Link href="#" className="underline">
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={signInWithGoogle}
+              >
                 Đăng nhập với Google
-              </Link>
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">

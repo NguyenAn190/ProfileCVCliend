@@ -124,7 +124,7 @@ export default function Login() {
 
   const signInWithGoogle = async () => {
     try {
-      window.location.href = 'http://localhost:4000/api/v1/users/auth/google';
+      window.location.href = process.env.NEXT_PUBLIC_API_URL + '/users/auth/google';
     } catch (error) {
       console.error('Error during Google sign-in:', error);
     }
