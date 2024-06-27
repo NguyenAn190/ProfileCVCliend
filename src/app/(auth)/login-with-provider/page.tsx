@@ -3,8 +3,9 @@
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Cookies from 'js-cookie';
+import React, { Suspense } from 'react';
 
-export default function LoginWithProvider() {
+function LoginWithProvider() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -24,5 +25,14 @@ export default function LoginWithProvider() {
     <div>
       Đang xử lý...
     </div>
+  );
+}
+
+// Bọc LoginWithProvider trong Suspense
+export default function WrappedLoginWithProvider() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginWithProvider />
+    </Suspense>
   );
 }
