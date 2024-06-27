@@ -14,11 +14,13 @@ import { useToast } from "@/components/ui/use-toast";
 import LoginSchema from "./login.schema";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState, useEffect  } from "react";
+import { useState, useEffect } from "react";
 import { login, sendEmailForgotPassword } from "@/service/auth/auth.service";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { LoadingPage } from "@/components/loading/loading-page";
+import { ToastAction } from "@radix-ui/react-toast";
+import { signIn } from "next-auth/react";
 
 interface LoginData {
   email: string;
@@ -53,6 +55,7 @@ export default function Login() {
     setIsLoading(true);
     try {
       const response = await login(data);
+      console.log(response);
       Cookies.set("access_token", response.access_token, { expires: 7 });
       toast({
         title: "Thành công!",
@@ -63,7 +66,7 @@ export default function Login() {
       if (error?.response?.data?.message) {
         setError("password", {
           type: "manual",
-          message: "Email hoặc mật khẩu không hợp lệ",
+          message: error?.response?.data?.message,
         });
       }
     } finally {
@@ -74,18 +77,33 @@ export default function Login() {
   const handleForgotPassword = async () => {
     const isValid = await trigger("email"); // Kiểm tra tính hợp lệ của email
     if (isValid) {
-      clearErrors("email"); 
+      clearErrors("email");
       try {
-        const email = (document.getElementById("email") as HTMLInputElement).value;
+        const email = (document.getElementById("email") as HTMLInputElement)
+          .value;
         setIsLoading(true);
         const response = await sendEmailForgotPassword(email);
+        console.log(response);
         toast({
           title: "Thành công!",
           description: "Mã xác thực đã được gửi qua email của bạn!",
+          action: (
+            <ToastAction altText="Kiểm tra Gmail">
+              <Button variant="outline">
+                <a
+                  href="https://mail.google.com/mail/u"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Kiểm tra Gmail
+                </a>
+              </Button>
+            </ToastAction>
+          ),
         });
         clearErrors("password");
       } catch (error: any) {
-        console.log(error)
+        console.log(error);
         if (error?.response?.data?.message) {
           setError("email", {
             type: "manual",
@@ -104,12 +122,20 @@ export default function Login() {
     }
   };
 
+  const signInWithGoogle = async () => {
+    try {
+      window.location.href = 'http://localhost:4000/api/v1/users/auth/google';
+    } catch (error) {
+      console.error('Error during Google sign-in:', error);
+    }
+  };
+
   return (
     <section className="flex items-center justify-center h-screen">
       <LoadingPage isLoading={isLoading} />
       <Card className="max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Đăng nhập</CardTitle>
+          <CardTitle className="text-2xl text-center">Đăng nhập</CardTitle>
           <CardDescription>
             Nhập tài khoản của bạn để hoàn tất quá trình đăng nhập
           </CardDescription>
@@ -122,7 +148,7 @@ export default function Login() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="mail@example.com"
                   {...register("email")}
                   className={errors.email ? "border-red-500" : ""}
                 />
@@ -145,6 +171,7 @@ export default function Login() {
                   id="password"
                   type="password"
                   {...register("password")}
+                  placeholder="••••••••••"
                   className={errors.password ? "border-red-500" : ""}
                 />
                 {errors.password && (
@@ -154,9 +181,14 @@ export default function Login() {
                 )}
               </div>
               <Button type="submit" className="w-full">
-                Login
+                Đăng nhập
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={signInWithGoogle}
+              >
                 Đăng nhập với Google
               </Button>
             </div>

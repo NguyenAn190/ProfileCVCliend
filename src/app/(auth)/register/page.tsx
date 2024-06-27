@@ -18,6 +18,7 @@ import { registerUser } from "@/service/auth/auth.service";
 import RegisterSchema from "@/app/(auth)/register/register.schema";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -41,6 +42,15 @@ export default function RegisterPage() {
       toast({
         title: "Tạo tài khoản thành công!",
         description: "Vui lòng kiểm tra email để kích hoạt tài khoản!",
+        action: (
+          <ToastAction altText="Kiểm tra Gmail">
+            <Button variant="outline">
+              <a href="https://mail.google.com/mail/u" target="_blank" rel="noopener noreferrer">
+              Kiểm tra Gmail
+              </a>
+            </Button>
+          </ToastAction>
+        ),
       });
       router.push("/login");
     } catch (e: any) {
@@ -61,7 +71,7 @@ export default function RegisterPage() {
       <LoadingPage isLoading={isLoading} />
       <Card className="mx-auto max-w-sm">
         <CardHeader>
-          <CardTitle className="text-xl">Đăng kí</CardTitle>
+          <CardTitle className="text-2xl text-center">Đăng kí</CardTitle>
           <CardDescription>
             Nhập thông tin của bạn để hoàn tất quá trình tạo tài khoản
           </CardDescription>
@@ -78,9 +88,9 @@ export default function RegisterPage() {
                   placeholder="Nguyễn Văn A"
                   required
                 />
-                {errors.email && (
+                {errors.fullname && (
                   <p className="text-red-500 text-sm">
-                    {errors.email.message}
+                    {errors.fullname.message}
                   </p>
                 )}
               </div>
@@ -90,7 +100,7 @@ export default function RegisterPage() {
                   id="email"
                   type="email"
                   {...register("email")}
-                  placeholder="gmail@example.com"
+                  placeholder="mail@example.com"
                   required
                 />
                 {errors.email && (
@@ -105,6 +115,7 @@ export default function RegisterPage() {
                   id="password"
                   type="password"
                   {...register("password")}
+                  placeholder="••••••••••"
                   required
                 />
                 {errors.password && (
@@ -118,6 +129,7 @@ export default function RegisterPage() {
                 <Input
                   id="confirmPassword"
                   type="password"
+                  placeholder="••••••••••"
                   {...register("confirmPassword")}
                   required
                 />
@@ -128,10 +140,12 @@ export default function RegisterPage() {
                 )}
               </div>
               <Button type="submit" className="w-full">
-                Tạo tài khoản
+                Đăng kí
               </Button>
               <Button variant="outline" className="w-full">
+              <Link href="#" className="underline">
                 Đăng nhập với Google
+              </Link>
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">

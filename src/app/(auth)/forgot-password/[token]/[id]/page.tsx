@@ -59,14 +59,14 @@ const ForgotPassword = () => {
       setIsLoading(true);
       await changePassword(id, data.password);
       toast({
-        title: "Thành công",
-        description: "Mật khẩu đã được thay đổi thành công!",
+        title: "Thay đổi mật khẩu thành công!",
+        description: "Giờ đây bạn đã có thể đăng nhập tài khoản của mình",
       });
       router.push("/login");
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Thất bại",
+        title: "Thay đổi mật khẩu thất bại!",
         description: "Có lỗi xảy ra, vui lòng thử lại sau!",
         action: <ToastAction altText="Try again">Thử lại</ToastAction>,
       });
@@ -80,7 +80,7 @@ const ForgotPassword = () => {
       <LoadingPage isLoading={isLoading} />
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Đổi mật khẩu</CardTitle>
+          <CardTitle className="text-2xl text-center">Đổi mật khẩu</CardTitle>
           <CardDescription>
             Nhập mật khẩu mới của bạn để thay đổi mật khẩu
           </CardDescription>
@@ -113,11 +113,9 @@ const ForgotPassword = () => {
                 <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>
               )}
             </div>
-            <CardFooter>
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Đang xử lý..." : "Đổi mật khẩu"}
               </Button>
-            </CardFooter>
           </form>
         </CardContent>
       </Card>
