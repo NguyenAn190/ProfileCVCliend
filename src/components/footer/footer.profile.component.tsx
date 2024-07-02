@@ -4,17 +4,17 @@ export default function FooterProfileComponent() {
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
-          <a
-            href="https://flowbite.com/"
-            className="flex items-center space-x-3 rtl:space-x-reverse"
-          >
-            <span className="self-center text-2xl font-bold whitespace-nowrap dark:text-white">
-              Profile
-              <span className="self-center text-2xl font-bold whitespace-nowrap dark:text-white text-blue-700">
-                CV
+            <a
+              href="https://flowbite.com/"
+              className="flex items-center space-x-3 rtl:space-x-reverse"
+            >
+              <span className="self-center text-2xl font-bold whitespace-nowrap dark:text-white">
+                Profile
+                <span className="self-center text-2xl font-bold whitespace-nowrap dark:text-white text-blue-700">
+                  CV
+                </span>
               </span>
-            </span>
-          </a>
+            </a>
           </div>
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
             <div>

@@ -1,11 +1,11 @@
 "use client";
 import { useEffect } from "react";
 import { gsap } from "gsap";
-import anhcv from "./anhcv.jpg";
+import anhcv from "./image/anhcv.jpg";
 import Image from "next/image";
-import start from "./star.png";
-import moon from "./moon.png";
-import { Button } from "@/components/ui/button";
+import start from "./image/star.png";
+import moon from "./image/moon.png";
+
 export default function Home() {
   useEffect(() => {
     gsap.to(".circle-1", {
@@ -85,8 +85,9 @@ export default function Home() {
             <div className="rounded-full w-[350px] h-[350px] md:w-[450px] md:h-[450px] border-4 border-blue-700 overflow-hidden flex justify-center items-center">
               <Image
                 src={anhcv}
-                width={350}
-                height={350}
+                width={600}
+                height={600}
+                loading="lazy"
                 alt="Picture of the author"
                 className="rounded-full w-[320px] h-[320px] md:w-[390px] md:h-[390px] object-cover z-10"
               />
